@@ -14,7 +14,7 @@ class _HomepageState extends State<Homepage> {
 
  List<String> todoList=["Coding","Do exercise"];
 
- 
+ final inputValue= TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,30 @@ class _HomepageState extends State<Homepage> {
       shape: CircleBorder(),
       onPressed:(){
 
-        
+        showDialog(context: context, builder: (builder){
+           return Dialog(
+             backgroundColor: Colors.amber[400],
+            //  insetPadding: EdgeInsets.all(100),
+             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // TextField(
+                //  controller: inputValue,
+                // ),
+               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: 
+               [ElevatedButton(onPressed: (){
+                        
+                }, child: Text('Add')),
+                        
+               ElevatedButton(onPressed: (){
+                  Navigator.of(builder).pop();
+                }, child: Text('Cancel')) ])
+              ],
+             ),
+           );
+        });
 
     },
     child: Icon(Icons.add,color: Colors.black,),
