@@ -12,9 +12,29 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
 
 
- List<String> todoList=["Coding","Do exercise"];
+ List todoList=[["Coding",true],["Do exercise",false]];
 
  final inputValue= TextEditingController();
+
+  bool istaskdone=false;
+
+ void addTask(String userinput){
+  setState(() {
+    List userValue = [];
+    userValue.add(userinput);
+    userValue.add(false);
+     todoList.add(userValue);
+  });
+ 
+ }
+
+
+ void removeTask(int removingindex){
+  setState(() {
+    todoList.removeAt(removingindex);
+  });
+ 
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +60,33 @@ class _HomepageState extends State<Homepage> {
           padding: EdgeInsets.all(8),
           height:50,
           color: Colors.amber[400],
-          child:Text(todoList[index],
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500
-          ),
           
+          child:Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Checkbox(value:todoList[index][1] , onChanged:(value){
+                     setState(() {
+                        todoList[index][1]=value!;
+                     });
+                  } ),
+                  Text(todoList[index][0],
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    decoration: todoList[index][1]? TextDecoration.lineThrough:TextDecoration.none
+                    
+                  ),
+                  
+                  ),
+                ],
+              ),
+
+              IconButton(onPressed: (){
+                 removeTask(index);
+              }, icon: Icon(Icons.delete))
+            ],
           )
         );
       },
@@ -65,21 +106,34 @@ class _HomepageState extends State<Homepage> {
 
         showDialog(context: context, builder: (builder){
            return Dialog(
-             backgroundColor: Colors.amber[400],
-            //  insetPadding: EdgeInsets.all(100),
+             backgroundColor: Colors.amber[300],
+              insetPadding: EdgeInsets.only(top: 270 ,bottom: 270 ,left: 50 ,right: 50),
              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              
               children: [
-                // TextField(
-                //  controller: inputValue,
-                // ),
+                TextField(
+                 controller: inputValue,
+
+                 decoration: InputDecoration(
+                  hintText: 'Enter your Task',
+                  border: OutlineInputBorder(),
+                  
+                 ),
+                ),
                Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: 
                [ElevatedButton(onPressed: (){
-                        
+                       addTask(inputValue.text);
+                       Navigator.of(builder).pop();
+                       inputValue.clear();
                 }, child: Text('Add')),
-                        
+
+                   SizedBox(
+                    width: 30,
+                   ),
+
                ElevatedButton(onPressed: (){
                   Navigator.of(builder).pop();
                 }, child: Text('Cancel')) ])
